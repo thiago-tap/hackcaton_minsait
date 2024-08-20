@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./nav-bar.component.scss'],
 })
 export class NavBarComponent implements OnInit {
+  /**
+   * Uma lista de itens de menu a serem exibidos na barra de navegação
+   * @type {Array<{name: string}}
+   */
   menuItems = [{
       name: 'Home'
     }, {
@@ -15,7 +19,14 @@ export class NavBarComponent implements OnInit {
     }, {
       name: 'Contact Us'
     }];
+  
+  /**
+   * Cria uma instancia do NavBarComponent
+   */
   constructor() { }
 
+  /**
+   * Inicializa o componente
+   */
   ngOnInit(): void { }
 }

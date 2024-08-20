@@ -12,19 +12,39 @@ import { ProductsService } from '../services/products.service';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
+  /**
+   * Armazena os dados do produto recebidos pelo ProductsService
+   * @type {Product[]}
+   */
   productData!: Product[];
+
+  /**
+   * Controla a exibição do spinner na interface
+   */
   showSpinner = false;
 
+  /**
+   * Cria uma instância de ProductsComponent
+   * @param {ProductsService} productService - Instancia do Produto usada para salvar e atualizar os produtos
+   * @param {MatDialog} dialog - Instancia da modal de dialogo
+   * @param {MatSnackBar} snackbar - Componente do Material para exibir notificações ao usuário
+   */
   constructor(
     private productService: ProductsService,
     private dialog: MatDialog,
     private snackbar: MatSnackBar
   ) {}
 
+  /**
+   * Inicializa o componente e faz a busca de produtos
+   */
   ngOnInit(): void {
     this.getProducts();
   }
 
+  /**
+   * Busca a lista de produtos do serviço e atualiza o estado do componente
+   */
   getProducts() {
     this.showSpinner = true;
     this.productService.getProducts().subscribe({
@@ -35,18 +55,25 @@ export class ProductsComponent implements OnInit {
       error: (err) => {
         this.showSpinner = false;
         this.snackbar.open('Something went wrong!...', '', {
-          duration: 3000
+          duration: 3000,
         });
-      }
+      },
     });
   }
 
+  /**
+   * Abre uma modal para adicionar um novo produto
+   */
   openDialog() {
     this.dialog.open(AddProductComponent, {
       width: '40%',
     });
   }
 
+  /**
+   * Abre um modal para editar um produto existente
+   * @param {Product} product - produto que será editado
+   */
   editProduct(product: Product) {
     this.dialog.open(AddProductComponent, {
       data: product,
@@ -54,16 +81,21 @@ export class ProductsComponent implements OnInit {
     });
   }
 
+  /**
+   * Exlui um produto pelo ID, chamando o serviço de exclusão
+   * Exibe uma mensagem de sucesso ou erro dependendo do resultado da operação
+   * @param {Product} product - produto para exclusão
+   */
   deleteProduct(product: any) {
     this.productService.deleteProduct(product.id).subscribe({
       next: (res) => {
         this.snackbar.open('Deleted Successfully!...', '', {
-          duration: 3000
+          duration: 3000,
         });
       },
       error: (error) => {
         this.snackbar.open('Something went wrong!...', '', {
-          duration: 3000
+          duration: 3000,
         });
       },
     });
